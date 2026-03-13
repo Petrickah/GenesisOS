@@ -13,6 +13,12 @@
     settings.PasswordAuthentication = false;
   };
 
+  # 🖥️ Display Manager (SDDM)
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+  };
+
   # ⌨️ Input & Hardware
   services.libinput.enable = true; # Trackpad support
   hardware.enableRedistributableFirmware = true; # WiFi/Bluetooth Firmware
