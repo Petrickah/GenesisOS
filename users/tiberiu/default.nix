@@ -13,6 +13,9 @@
     waybar
     dunst
     libnotify
+    brightnessctl
+    wireplumber
+    playerctl
     
     # Browsers & Apps
     firefox

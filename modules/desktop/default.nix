@@ -1,84 +1,88 @@
-{ config, lib, pkgs, osConfig, ... }:
+{ config, lib, pkgs, ... }:
 
 {
-  # 🎨 HYPRLAND: Configurație de bază (Inspirată de Omarchy)
+  # 🎨 HYPRLAND: Sovereign Modular Config (V3)
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
 
     settings = {
-      # ── VARIABILE DE MEDIU ────────────────────────────────────
+      # ── VARIABILE DE MEDIU (NVIDIA & Wayland) ─────────────────
       env = [
-        # NVIDIA Fixes (Doar dacă sunt detectate drivere în osConfig)
         "LIBVA_DRIVER_NAME,nvidia"
         "__GLX_VENDOR_LIBRARY_NAME,nvidia"
         "GBM_BACKEND,nvidia-drm"
         "WLR_NO_HARDWARE_CURSORS,1"
         "NVD_BACKEND,direct"
-
-        # Wayland Native
-        "GDK_BACKEND,wayland,x11,*"
-        "QT_QPA_PLATFORM,wayland;xcb"
-        "SDL_VIDEODRIVER,wayland"
-        "CLUTTER_BACKEND,wayland"
-        
-        # Electron / Ozone Fixes
         "ELECTRON_OZONE_PLATFORM_HINT,auto"
         "NIXOS_OZONE_WL,1"
-
-        # Cursor
         "XCURSOR_SIZE,24"
         "HYPRCURSOR_SIZE,24"
       ];
 
-      # ── ASPECT VIZUAL ──────────────────────────────────────────
+      # ── GENERAL ───────────────────────────────────────────────
       general = {
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
-        "col.active_border" = "rgba(bb9af7ff) rgba(7aa2f7ff) 45deg"; # Tokyo Night Purple/Blue
-        "col.inactive_border" = "rgba(1a1b26ff)";
+        "col.active_border" = "rgba(7aa2f7ee) rgba(bb9af7ee) 45deg"; # Tokyo Night Blue/Purple
+        "col.inactive_border" = "rgba(1a1b26aa)";
         layout = "dwindle";
+        resize_on_border = true;
       };
 
+      # ── DECORATION ────────────────────────────────────────────
       decoration = {
         rounding = 10;
         blur = {
           enabled = true;
-          size = 3;
-          passes = 1;
+          size = 5;
+          passes = 2;
+          vibrancy = 0.16;
         };
-        drop_shadow = true;
-        shadow_range = 4;
-        shadow_render_power = 3;
-        "col.shadow" = "rgba(1a1a1aee)";
+        shadow = {
+          enabled = true;
+          range = 20;
+          render_power = 3;
+          color = "rgba(1a1a1aee)";
+        };
       };
 
+      # ── ANIMATIONS (Omarchy Optimized) ────────────────────────
       animations = {
         enabled = true;
-        bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
+        bezier = [
+          "easeOutQuint,0.23,1,0.32,1"
+          "easeInOutCubic,0.65,0.05,0.36,1"
+          "linear,0,0,1,1"
+          "almostLinear,0.5,0.5,0.75,1.0"
+          "quick,0.15,0,0.1,1"
+        ];
         animation = [
-          "windows, 1, 7, myBezier"
-          "windowsOut, 1, 7, default, popin 80%"
-          "border, 1, 10, default"
-          "borderangle, 1, 8, default"
-          "fade, 1, 7, default"
+          "global, 1, 10, default"
+          "border, 1, 5.39, easeOutQuint"
+          "windows, 1, 4.79, easeOutQuint"
+          "windowsIn, 1, 4.1, easeOutQuint, popin 87%"
+          "windowsOut, 1, 1.49, linear, popin 87%"
+          "fadeIn, 1, 1.73, almostLinear"
+          "fadeOut, 1, 1.46, almostLinear"
+          "fade, 1, 3.03, quick"
           "workspaces, 1, 6, default"
         ];
       };
 
-      # ── KEYBINDINGS ────────────────────────────────────────────
+      # ── KEYBINDINGS (Sovereign Set) ──────────────────────────
       "$mainMod" = "SUPER";
       bind = [
+        # Essential
         "$mainMod, T, exec, ghostty"
         "$mainMod, Q, killactive,"
         "$mainMod, M, exit,"
         "$mainMod, E, exec, dolphin"
         "$mainMod, V, togglefloating,"
         "$mainMod, D, exec, wofi --show drun"
-        "$mainMod, P, pseudo," # dwindle
-        "$mainMod, J, togglesplit," # dwindle
         "$mainMod, F, fullscreen,"
+        "$mainMod, ESCAPE, exec, hyprlock"
 
         # Focus
         "$mainMod, left, movefocus, l"
@@ -98,7 +102,7 @@
         "$mainMod, 9, workspace, 9"
         "$mainMod, 0, workspace, 10"
 
-        # Move active window to workspace
+        # Move to Workspaces
         "$mainMod SHIFT, 1, movetoworkspace, 1"
         "$mainMod SHIFT, 2, movetoworkspace, 2"
         "$mainMod SHIFT, 3, movetoworkspace, 3"
@@ -106,11 +110,26 @@
         "$mainMod SHIFT, 5, movetoworkspace, 5"
       ];
 
+      # Multimedia Keys (Laptop Support)
+      bindel = [
+        ",XF86AudioRaiseVolume, exec, wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"
+        ",XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+        ",XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ",XF86MonBrightnessUp, exec, brightnessctl set 5%+"
+        ",XF86MonBrightnessDown, exec, brightnessctl set 5%-"
+      ];
+
       # Mouse bindings
       bindm = [
         "$mainMod, mouse:272, movewindow"
         "$mainMod, mouse:273, resizewindow"
       ];
+
+      # Misc
+      misc = {
+        disable_hyprland_logo = true;
+        force_default_wallpaper = 0;
+      };
     };
   };
 }
