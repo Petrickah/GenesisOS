@@ -16,7 +16,7 @@
     
     # Browsers & Apps
     firefox
-    dolphin # File manager
+    kdePackages.dolphin # File manager
     
     # Dev tools
     vscode
