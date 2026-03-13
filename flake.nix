@@ -9,10 +9,16 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  let
+    system = "x86_64-linux";
+    # 📚 Bibliotecă custom pentru funcții și logică partajată
+    myLib = import ./modules/core/lib.nix { inherit (nixpkgs) lib; };
+  in
+  {
     nixosConfigurations.asgard-laptop = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
+      inherit system;
+      specialArgs = { inherit inputs myLib; };
       modules = [
         # 1. Host Configuration (Hardware + Kernel)
         ./hosts/asgard-laptop

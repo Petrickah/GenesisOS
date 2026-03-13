@@ -1,29 +1,45 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
-  # Home Manager Baseline for tiberiu
+  # 👤 User: tiberiu
   home.username = "tiberiu";
   home.homeDirectory = "/home/tiberiu";
 
-  # 📦 Home Packages
+  # 📦 User Packages
   home.packages = with pkgs; [
-    fastfetch
-    htop
+    # Terminal & UI
+    ghostty
+    wofi
+    waybar
+    dunst
+    libnotify
+    
+    # Browsers & Apps
+    firefox
+    dolphin # File manager
+    
+    # Dev tools
+    vscode
+    nil # Nix LSP
+    nixd # Nix LSP
   ];
 
-  # 🛠️ Program Configurations
-  programs.git = {
+  # 🚀 Imports: Modulele de utilizator
+  imports = [
+    ../../modules/desktop/default.nix # Hyprland config (Home Manager)
+  ];
+
+  # 🐚 Fish Shell (Configurație User)
+  programs.fish = {
     enable = true;
-    # settings replaces extraConfig in newer home-manager
-    settings = {
-      user = {
-        name = "Tiberiu";
-        email = "tiberiu@example.com";
-      };
-    };
+    interactiveShellInit = ''
+      set -g fish_greeting ""
+    '';
   };
 
-  programs.home-manager.enable = true;
-
+  # ── STATE VERSION ───────────────────────────────────────────
   home.stateVersion = "24.11";
+
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
 }
