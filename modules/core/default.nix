@@ -34,6 +34,17 @@
 
   # ❄️ Nix Settings
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  
+  # 🔗 Path Linking (Necesar pentru Home Manager + Portals)
+  environment.pathsToLink = [ 
+    "/share/applications" 
+    "/share/xdg-desktop-portal"
+  ];
+
+  # ── BOOTLOADER (Standard UEFI) ──────────────────────────────
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
   nix.gc = {
     automatic = true;
     dates = "weekly";
