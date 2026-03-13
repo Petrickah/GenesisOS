@@ -6,18 +6,23 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   # 🛡️ Networking & SSH
+  networking.networkmanager.enable = true;
   services.openssh = {
     enable = true;
     settings.PermitRootLogin = "no";
-    settings.PasswordAuthentication = true; # Set to false if using keys
+    settings.PasswordAuthentication = false;
   };
+
+  # ⌨️ Input & Hardware
+  services.libinput.enable = true; # Trackpad support
+  hardware.enableRedistributableFirmware = true; # WiFi/Bluetooth Firmware
 
   # 👤 User Configuration
   users.users.tiberiu = {
     isNormalUser = true;
-    description = "Arch Arhitect";
-    extraGroups = [ "networkmanager" "wheel" "video" ];
-    shell = pkgs.zsh;
+    description = "Arhitectul";
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" ];
+    shell = pkgs.fish;
   };
 
   # 📦 System Packages
@@ -26,10 +31,11 @@
     vim
     wget
     curl
-    zsh
+    fish
   ];
 
-  # 🐚 Zsh Enable
+  # 🐚 Shells
+  programs.fish.enable = true;
   programs.zsh.enable = true;
 
   # ❄️ Nix Settings
