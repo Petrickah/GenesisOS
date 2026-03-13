@@ -73,6 +73,25 @@
 
       # ── KEYBINDINGS (Sovereign Set) ──────────────────────────
       "$mainMod" = "SUPER";
+      
+      # ── AUTOSTART ──────────────────────────────────────────────
+      "exec-once" = [
+        "waybar"
+        "dunst"
+        "nm-applet --indicator" # Iconița de rețea în bară
+      ];
+
+      # ── INPUT ──────────────────────────────────────────────────
+      input = {
+        kb_layout = "ro";
+        follow_mouse = 1;
+        touchpad = {
+          natural_scroll = true;
+          tap-to-click = true;
+        };
+        sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
+      };
+
       bind = [
         # Essential
         "$mainMod, T, exec, ghostty"

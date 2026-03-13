@@ -13,6 +13,7 @@
     waybar
     dunst
     libnotify
+    networkmanagerapplet
     brightnessctl
     wireplumber
     playerctl
