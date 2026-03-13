@@ -19,6 +19,22 @@
     wayland.enable = true;
   };
 
+  # ⌨️ Keyboard & Localization
+  console.keyMap = "ro";
+  services.xserver.xkb = {
+    layout = "ro";
+    variant = "";
+  };
+
+  # 🚀 Hyprland System-Level (Necesar pentru SDDM session entry)
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
+  # 🖱️ NVIDIA Cursor Fix (System level)
+  environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
+
   # ⌨️ Input & Hardware
   services.libinput.enable = true; # Trackpad support
   hardware.enableRedistributableFirmware = true; # WiFi/Bluetooth Firmware
